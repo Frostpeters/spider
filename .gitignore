@@ -23,4 +23,4 @@ venv
 
 
 # local db settings
-quotespider/quotespider/database.py
+#quotespider/quotespider/database.py
