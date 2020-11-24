@@ -12,3 +12,7 @@ class QuotetutorialItem(scrapy.Item):
     title = scrapy.Field()
     author = scrapy.Field()
     tag = scrapy.Field()
+
+class FacebookSpiderItem(scrapy.Item):
+    title = scrapy.Field()
+    page = scrapy.Field()

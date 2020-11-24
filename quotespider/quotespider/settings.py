@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Scrapy settings for quotespider project
 #
 # For simplicity, this file contains only settings considered important or
@@ -7,18 +8,15 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = 'quotespider'
+BOT_NAME = 'fbquote'
 
 SPIDER_MODULES = ['quotespider.spiders']
 NEWSPIDER_MODULE = 'quotespider.spiders'
 
-
-# Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'quotespider (+http://www.yourdomain.com)'
-
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
 
+# USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36'
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
 
@@ -64,6 +62,7 @@ ROBOTSTXT_OBEY = True
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
    'quotespider.pipelines.QuotespiderPipeline': 300,
+   'quotespider.pipelines.FacebookSpiderPipeline': 300,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
@@ -86,3 +85,7 @@ ITEM_PIPELINES = {
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+URLLENGTH_LIMIT = 99999
+# FEED_EXPORT_ENCODING = 'utf-8'
+DUPEFILTER_DEBUG = True
+LOG_LEVEL = 'INFO'
