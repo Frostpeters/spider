@@ -82,9 +82,10 @@ class FacebookSpiderPipeline(object):
 
     def store_tb(self, item):
         try:
-            self.curr.execute("""insert into `comments` (`text`, `page`) values (%s, %s) """, (
+            self.curr.execute("""insert into `comments` (`text`, `page`, `search_id`) values (%s, %s, %s) """, (
                 json.dumps(item['title']),
                 item['page'],
+                item['search_id'],
             ))
         except mysql.connector.DatabaseError as err:
             print("Error: ", err)

@@ -16,3 +16,4 @@ class QuotetutorialItem(scrapy.Item):
 class FacebookSpiderItem(scrapy.Item):
     title = scrapy.Field()
     page = scrapy.Field()
+    search_id = scrapy.Field()

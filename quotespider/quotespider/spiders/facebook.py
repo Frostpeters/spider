@@ -21,6 +21,9 @@ class FacebookSpider(scrapy.Spider):
         'Accept-Language': 'uk-UA,ua;q=0.5',
         'cookie': cookie,
     }
+    count_request_max = 0
+    count_request = 0
+
 
     def __init__(self, *args, **kwargs):
         self.comment = []
@@ -37,6 +40,14 @@ class FacebookSpider(scrapy.Spider):
 
         if 'pass' in kwargs:
             self.password = kwargs.get("pass")
+
+        if 'search_id' in kwargs:
+            self.search_id = kwargs.get("search_id")
+
+        if 'count' in kwargs:
+            self.count_request_max = int(kwargs.get("count"))
+        else:
+            self.count_request_max = int(0)
 
         self.start_urls = ['https://mbasic.facebook.com']
 
@@ -99,12 +110,16 @@ class FacebookSpider(scrapy.Spider):
         # return 0
         for comment in all_comment:
             title = next(iter(comment.xpath('div/div/text()').extract()), None)
-            if title:
-                items['title'] = title
-                items['page'] = response.request.url
-                yield items
-
-        if response.xpath('.//div[contains(@id,"see_next")]/a/@href'):
-            href = 'https://mbasic.facebook.com/' + response.xpath('.//div[contains(@id,"see_next")]/a/@href').get()
-            yield scrapy.Request(url=href, callback=self.parse_comment,
-                                 meta={'index': 1})
+            print(self.count_request)
+            if self.count_request_max == 0 | self.count_request_max >= self.count_request:
+                if title:
+                    self.count_request = self.count_request + 1
+                    items['title'] = title
+                    items['page'] = response.request.url
+                    items['search_id'] = self.search_id
+                    yield items
+        if self.count_request_max == 0 | self.count_request_max >= self.count_request:
+            if response.xpath('.//div[contains(@id,"see_next")]/a/@href'):
+                href = 'https://mbasic.facebook.com/' + response.xpath('.//div[contains(@id,"see_next")]/a/@href').get()
+                yield scrapy.Request(url=href, callback=self.parse_comment,
+                                     meta={'index': 1})
